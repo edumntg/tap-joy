@@ -3,8 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 
 public class Player : MonoBehaviour {
-
-    public bool isOnFloor;
+	
     public bool started = false;
 	public bool alive = true;
     public int scoreCount;
@@ -18,16 +17,11 @@ public class Player : MonoBehaviour {
     }
 	// Use this for initialization
 	void Start () {
-        isOnFloor = false;
         scoreCount = 0;
 	}
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Floor")
-        {
-            isOnFloor = true;
-        }
         if(other.gameObject.tag == "Obstacle")
         {
             //PLAYER IS DEAD!!!!!
