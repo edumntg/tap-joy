@@ -3,35 +3,28 @@ using System.Collections;
 
 public class Game : MonoBehaviour {
 	
-	public static Vector3 baseScrollingSpeed = new Vector3(10.0f, 0.0f, 0.0f);
+	public static Vector3 baseScrollingSpeed = new Vector3(8.0f, 0.0f, 0.0f);
 	public static Vector3 baseScrollingDirection = new Vector3(-1.0f, 0.0f, 0.0f);
 	public static Vector3 scrollingSpeedIncrease = new Vector3(1.0f, 0.0f, 0.0f);
 	public static int speedIncreaseTime = 15; //ms
 
 	
 	public GameObject playerObject;
-	public Scrolling scrollingScript;
+    public static Scrolling scrollingScript;
 
-	// Use this for initialization
 	void Start () {
 
 		//get player gameObject
-		foreach(GameObject obj in GetComponentsInChildren<GameObject>())
+		foreach(Transform t in GetComponentsInChildren<Transform>())
 		{
-			if(obj.name == "PlayerObject")
+			if(t.name == "Player")
 			{
-				playerObject = obj;
+				playerObject = t.gameObject;
 				break;
 			}
 		}
 
 		//get game scrolling script
 		scrollingScript = GetComponentInChildren<Scrolling>();
-
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
 	}
 }

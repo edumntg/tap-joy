@@ -7,15 +7,13 @@ public class Jump : MonoBehaviour
 	
 	Vector3 jumpForce = new Vector3(0.0f, 18000.0f, 0.0f);
 	Vector3 jumpDirection = new Vector3(0.0f, 1.0f, 0.0f);
-	
-	public bool isJumping = false;
 	Player player;
 	
 	
 	void Start()
 	{
-		player = GetComponent<Player>();
-	}
+		player = gameObject.GetComponent<Player>();
+    }
 	
 	void Update()
 	{
@@ -24,21 +22,14 @@ public class Jump : MonoBehaviour
 			return;
 		}
 		
-		if (Input.GetKeyDown(KeyCode.W) && !isJumping)
+		if (Input.GetKeyDown(KeyCode.W) && player.CanJump())
 		{
-			GetComponent<Rigidbody>().AddForce(Vector3.Scale(jumpForce, jumpDirection));
-			isJumping = true;
+			player.isJumping = true;
+            player.grounded = false;
+            player.GetBody().velocity = Vector3.zero;
+            player.GetBody().AddForce(Vector3.Scale(jumpForce, jumpDirection));
 			player.StartGame();
 			player.score += 1;
 		}
-		
-	}
-	
-	void OnTriggerEnter(Collider other)
-	{
-		if(other.transform.tag == "Floor")
-		{
-			isJumping = false;
-		}        
 	}
 }

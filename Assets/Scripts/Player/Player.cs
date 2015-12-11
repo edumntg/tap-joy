@@ -6,53 +6,44 @@ public class Player : MonoBehaviour {
 	
     public bool started = false;
 	public bool alive = true;
+    public bool isJumping = false;
     public int scoreCount;
+    public Rigidbody body;
+    public bool grounded = false;
     public int score
     {
         get { return scoreCount; }
         set
         {
-            scoreCount += value;
-        }
-    }
-	// Use this for initialization
-	void Start () {
-        scoreCount = 0;
-	}
-
-    void OnTriggerEnter(Collider other)
-    {
-        if(other.gameObject.tag == "Obstacle")
-        {
-            //PLAYER IS DEAD!!!!!
-            Scrolling environmentScrolling = other.GetComponentInParent<Scrolling>();
-            if(environmentScrolling != null)
+            scoreCount = value;
+            Text scoreText = gameObject.transform.parent.parent.FindChild("UI").GetComponentInChildren<Text>();
+            if(scoreText != null)
             {
-                environmentScrolling.speed = Vector3.zero;
-                environmentScrolling.scroll = false;
-                Kill();
+                scoreText.text = scoreCount.ToString();
             }
         }
-        if(other.gameObject.tag == "Valuable")
-        {
-            //coin taken
-            score += 1;
-            Destroy(other.gameObject);
-        }
     }
 
-    public Vector3 GetPosition() { return transform.position; }
-    public bool CanJump() { return gameObject.transform.position.y == 0.5f; }
-    public bool GetGameObject() { return gameObject; }
+	void Start () {
+        scoreCount = 0;
+        body = gameObject.GetComponent<Rigidbody>();
+        body.velocity = new Vector3(0, -100.0f, 0);
+	}
+
+    void FixedUpdate()
+    {
+        if(GetPosition().y < 0) //negative
+        {
+            Kill();
+        }
+    }
 
     public void Kill()
     {
-        Animator anim = gameObject.GetComponent<Animator>();
-        if(anim != null && anim.GetBool("Alive") == true)
-        {
-            anim.Stop();
-        }
 		alive = false;
+        Game.scrollingScript.scroll = false;
+        Vector3 Vo = GetBody().velocity;
+        GetBody().velocity = new Vector3(0, Vo.y + Physics.gravity.y * Time.deltaTime, 0);
     }
 
     public void StartGame()
@@ -68,4 +59,30 @@ public class Player : MonoBehaviour {
             }
         }
     }
+
+    void OnTriggerEnter(Collider collider)
+    {
+        if (collider.transform.tag == "Floor")
+        {
+            isJumping = false;
+            grounded = true;
+        }
+    }
+
+    void OnTriggerExit(Collider collider)
+    {
+        if(!Physics.Raycast(GetPosition(), Vector3.down, 10) && GetPosition().y < 0.55)
+        {
+            if (alive)
+            {
+                Kill();
+            }
+        }
+    }
+
+    public Vector3 GetPosition() { return gameObject.transform.position; }
+    public bool CanJump() { return !isJumping && grounded; }
+    public bool GetGameObject() { return gameObject; }
+    public bool IsGrounded() { return grounded; }
+    public Rigidbody GetBody() { return body; }
 }

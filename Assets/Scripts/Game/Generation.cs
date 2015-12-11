@@ -26,7 +26,9 @@ public class Generation : MonoBehaviour {
 
 	bool lastIsEmpty = false;
 
-	float tileYScale = 1.0f;
+	float tileYScale = 3.0f;
+
+    int tilesCreated = 0;
 
 	void Start () 
     {
@@ -45,9 +47,12 @@ public class Generation : MonoBehaviour {
 			//let's create the initial tiles
 
 			item = items.GetItem("Tile");
+            tilesCreated++;
 			prefab = Resources.Load (item.GetDirectory(), typeof(GameObject));
-			ObjectI = ObjectI = Instantiate(prefab, Vector3.zero, Quaternion.identity) as GameObject;
-			ObjectI.transform.position = new Vector3(0, 0, 0) + item.GetBasePosition();
+			ObjectI = Instantiate(prefab, Vector3.zero, Quaternion.identity) as GameObject;
+            ObjectI.name = ObjectI.name + tilesCreated;
+            ObjectI.transform.localScale = new Vector3(1.0f, tileYScale, 1.0f);
+            ObjectI.transform.position = new Vector3(0, 0, 0) + item.GetBasePosition()*tileYScale;
 			ObjectI.transform.SetParent(gameObject.transform.FindChild("Tiles").transform);
 			tiles.Add (ObjectI);
 			//let's calculate how many tiles we need to fill the screen
@@ -63,11 +68,14 @@ public class Generation : MonoBehaviour {
 				if(i != 0) //avoid first tile
 				{
 	                item = items.GetItem("Tile");
+                    tilesCreated++;
 	                prefab = Resources.Load(item.GetDirectory(), typeof(GameObject));
 	                ObjectI = Instantiate(prefab, Vector3.zero, Quaternion.identity) as GameObject;
-	                ObjectI.transform.position = new Vector3(i * tileSize.x, 0, 0) + item.GetBasePosition();
+                    ObjectI.name = ObjectI.name + tilesCreated;
+                    ObjectI.transform.localScale = new Vector3(1.0f, tileYScale, 1.0f);
+                    ObjectI.transform.position = new Vector3(i * tileSize.x, 0, 0) + item.GetBasePosition()*tileYScale;
 	                ObjectI.transform.SetParent(gameObject.transform.FindChild("Tiles").transform);
-					tiles.Add(ObjectI);
+                    tiles.Add(ObjectI);
 				}
             }
         }
@@ -83,23 +91,26 @@ public class Generation : MonoBehaviour {
 		{
 			item = items.GetItem("Tile");
 			prefab = Resources.Load(item.GetDirectory(), typeof(GameObject));
+            tilesCreated++;
 			ObjectI = Instantiate(prefab) as GameObject;
-
+            ObjectI.name = ObjectI.name + tilesCreated;
 			int rand = Random.Range (1, 4);
-			if(rand == 1 && !lastIsEmpty && player.started)
+            ObjectI.transform.localScale = new Vector3(1.0f, tileYScale, 1.0f);
+            if (rand == 1 && !lastIsEmpty && player.started)
 			{
-				ObjectI.transform.position = new Vector3(lastTile.transform.position.x + tileSize.x*4, item.GetBasePosition().y, item.GetBasePosition().z);
+                float sepRand = Random.Range(1.5f, 2.5f);
+				ObjectI.transform.position = new Vector3(lastTile.transform.position.x + tileSize.x*2*sepRand, item.GetBasePosition().y*tileYScale, item.GetBasePosition().z);
 				lastIsEmpty = true;			
 			}
 			else
 			{
-				ObjectI.transform.position = new Vector3(lastTile.transform.position.x + tileSize.x, item.GetBasePosition().y, item.GetBasePosition().z);
+				ObjectI.transform.position = new Vector3(lastTile.transform.position.x + tileSize.x, item.GetBasePosition().y*tileYScale, item.GetBasePosition().z);
 				lastIsEmpty = false;
 			}
-
-			ObjectI.transform.SetParent(gameObject.transform.FindChild("Tiles").transform);
+            ObjectI.transform.SetParent(gameObject.transform.FindChild("Tiles").transform);
 			tiles.Add (ObjectI);
 		}
+
 		//let's delete tiles outside of camera
 		foreach(GameObject it in tiles)
 		{
@@ -111,19 +122,6 @@ public class Generation : MonoBehaviour {
 				break;
 			}
 		}
-	}
-
-	Transform GetPlayer()
-
-	{
-		foreach(Transform t in gameObject.transform.parent.GetComponentsInChildren<Transform>())
-		{
-			if(t.tag == "Player")
-			{
-				return t;
-			}
-		}
-		return null;
 	}
 
 }
