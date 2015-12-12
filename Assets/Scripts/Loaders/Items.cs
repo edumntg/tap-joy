@@ -47,13 +47,39 @@ public class Items {
                                         string[] split = val.Split(',');
                                         item.basePosition = new Vector3(float.Parse(split[0]), float.Parse(split[1]), float.Parse(split[2]));
                                         break;
+                                    case "value":
+                                        item.value = Convert.ToInt32(reader.Value);
+                                        break;
                                 }
                             }
-                            //if we get this point, it's mean there is no more attrs to read
-                            if (item != null)
+                        }
+                        break;
+
+                    case "attribute":
+                        if(reader.HasAttributes)
+                        {
+                            while(reader.MoveToNextAttribute())
                             {
-                                items.Add(item);
+                                string[] stringAttribute = new string[2];
+                                if(reader.Name.ToString() == "name")
+                                {
+                                    stringAttribute[0] = reader.Value.ToString();
+                                    reader.MoveToNextAttribute();
+                                    if(reader.Name.ToString() == "value")
+                                    {
+                                        stringAttribute[1] = reader.Value.ToString();
+                                    }
+                                }
+                                item.attributes.Add(stringAttribute[0], stringAttribute[1]);
                             }
+                        }
+                        break;
+
+                    default:
+                        //if we get this point, it's mean there is no more attrs to read
+                        if (item != null)
+                        {
+                            items.Add(item);
                         }
                         break;
                 }

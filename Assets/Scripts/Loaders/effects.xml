@@ -1,0 +1,4 @@
+<effects>
+	<effect id="1" name="DiamondExplodeGreen" codeName="DIAMOND_EXPLODE_GREEN" file="Magic Effects/DiamondExplodeGreen"/>
+  <effect id="2" name="DiamondExplodePurple" codeName="DIAMOND_EXPLODE_PURPLE" file="Magic Effects/DiamondExplodePurple"/>
+</effects>

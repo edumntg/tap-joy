@@ -4,22 +4,16 @@ using System;
 
 public class Scrolling : MonoBehaviour {
 
-	public Vector3 speed = Game.baseScrollingSpeed;
-	public Vector3 direction = Game.baseScrollingDirection;
+    Vector3 speed = Game.baseScrollingSpeed;
+	Vector3 direction = Game.baseScrollingDirection;
 
     public bool linkedToCamera = false;
     public bool isLooping = true;
-    public bool scroll = true;
+    public bool scroll = false;
 
     Vector3 movement;
     int timeElapsed = 0;
     int lastIncreased = 0;
-    
-
-	void Start () {
-        //
-
-	}
 	
 	// Update is called once per frame
 	void Update () {
@@ -34,7 +28,7 @@ public class Scrolling : MonoBehaviour {
         movement *= Time.deltaTime;
         foreach(Transform t in childs)
         {
-            if (t.name.Contains("Tile"))
+            if (t.tag == "Floor" || t.tag == "Valuable" || t.tag == "MovableEffect")
             {
                 t.Translate(movement);
             }
@@ -52,4 +46,7 @@ public class Scrolling : MonoBehaviour {
             speed += Game.scrollingSpeedIncrease;
         }
 	}
+
+    public void Start() { scroll = true; }
+    public void Stop() { scroll = false;}
 }

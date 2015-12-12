@@ -12,7 +12,7 @@ public class Jump : MonoBehaviour
 	
 	void Start()
 	{
-		player = gameObject.GetComponent<Player>();
+        player = gameObject.GetComponent<Player>();
     }
 	
 	void Update()
@@ -32,4 +32,6 @@ public class Jump : MonoBehaviour
 			player.score += 1;
 		}
 	}
+
+    public void AddJumpForce(Vector3 add) { jumpForce += add; }
 }

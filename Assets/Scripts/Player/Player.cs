@@ -41,7 +41,7 @@ public class Player : MonoBehaviour {
     public void Kill()
     {
 		alive = false;
-        Game.scrollingScript.scroll = false;
+        Game.StopScrolling();
         Vector3 Vo = GetBody().velocity;
         GetBody().velocity = new Vector3(0, Vo.y + Physics.gravity.y * Time.deltaTime, 0);
     }
@@ -58,8 +58,11 @@ public class Player : MonoBehaviour {
                 break;
             }
         }
+
+        Time.timeScale = 1;
     }
 
+    Object EffectObject;
     void OnTriggerEnter(Collider collider)
     {
         if (collider.transform.tag == "Floor")
@@ -67,11 +70,28 @@ public class Player : MonoBehaviour {
             isJumping = false;
             grounded = true;
         }
+        if (collider.gameObject.tag == "Valuable")
+        {
+            string itemName = collider.gameObject.name.Replace("Diamond(Clone)", " Diamond(Clone)").Replace("(Clone)", "");
+            Item item = Game.items.GetItem(itemName);
+            if (item != null)
+            {
+                score += item.GetValue();
+            }
+
+            //effect
+            MagicEffect effect = Game.effects.GetEffect(item.GetAttribute("DeathEffect"));
+            Vector3 position = collider.gameObject.transform.position;
+
+            Destroy(collider.gameObject); //destroy the game object before sending the effect
+
+            Game.SendMagicEffect(effect, position);         
+        }
     }
 
     void OnTriggerExit(Collider collider)
     {
-        if(!Physics.Raycast(GetPosition(), Vector3.down, 10) && GetPosition().y < 0.55)
+        if (!Physics.Raycast(GetPosition(), Vector3.down, 10) && GetPosition().y < 0.55)
         {
             if (alive)
             {

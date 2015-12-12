@@ -1,3 +1,9 @@
 <items>
 	<item id="1" name="Tile" file="Items/Tile" base="0,-4,0"/>
+  <item id="2" name="Normal Diamond" value="2" file="Items/NormalDiamond">
+    <attribute name="DeathEffect" value="DIAMOND_EXPLODE_PURPLE"/>
+  </item>
+  <item id="3" name="Rare Diamond" value="4" file="Items/RareDiamond">
+    <attribute name="DeathEffect" value="DIAMOND_EXPLODE_GREEN"/>
+  </item>
 </items>
