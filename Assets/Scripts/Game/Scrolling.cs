@@ -49,4 +49,6 @@ public class Scrolling : MonoBehaviour {
 
     public void Start() { scroll = true; }
     public void Stop() { scroll = false;}
+    public Vector3 GetSpeed() { return speed; }
+    public Vector3 GetDirection() { return direction; }
 }

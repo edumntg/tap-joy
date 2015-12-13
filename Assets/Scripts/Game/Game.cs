@@ -61,4 +61,14 @@ public class Game : MonoBehaviour {
         Destroy(gObject, 3); //destroy after 3 seconds
     }
 
+    public static void SendAnimatedText(string text, Color color, Vector3 position)
+    {
+        Object atObject = Resources.Load("Animated Text/AnimText", typeof(GameObject));
+        GameObject gObject = Instantiate(atObject, position, Quaternion.identity) as GameObject;
+        gObject.GetComponent<AnimatedText>().Initialize(text, color);
+        gObject.transform.SetParent(MainObject.transform.FindChild("UI").transform.FindChild("Canvas").transform.FindChild("AnimatedTexts").transform);
+
+        Destroy(gObject, 2);
+    }
+
 }

@@ -30,6 +30,7 @@ public class Jump : MonoBehaviour
             player.GetBody().AddForce(Vector3.Scale(jumpForce, jumpDirection));
 			player.StartGame();
 			player.score += 1;
+            Game.SendAnimatedText("Hello", Color.white, player.GetPosition());
 		}
 	}
 

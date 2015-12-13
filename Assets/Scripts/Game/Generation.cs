@@ -38,7 +38,7 @@ public class Generation : MonoBehaviour {
         characters = Game.characters;
 
         //let's create the player
-		Character character = characters.GetCharacter("Cube");
+		Character character = characters.GetCharacter("Ball");
         prefab = Resources.Load(character.GetDirectory(), typeof(GameObject));
         PlayerObject = Instantiate(prefab) as GameObject;
 		PlayerObject.transform.position = character.GetBasePosition();

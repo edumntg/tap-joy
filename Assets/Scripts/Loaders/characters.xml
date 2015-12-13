@@ -1,3 +1,4 @@
 <characters>
 	<character id="1" name="Cube" blocked="0" file="Characters/Cube" base="0,0.5,0"/>
+  <character id="2" name="Ball" blocked="0" file="Characters/Ball" base="0,0.5,0"/>
 </characters>
