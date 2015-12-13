@@ -5,7 +5,7 @@ using System;
 public class Jump : MonoBehaviour
 {
 	
-	Vector3 jumpForce = new Vector3(0.0f, 18000.0f, 0.0f);
+	Vector3 jumpForce = new Vector3(0.0f, 17500.0f, 0.0f);
 	Vector3 jumpDirection = new Vector3(0.0f, 1.0f, 0.0f);
 	Player player;
 	
