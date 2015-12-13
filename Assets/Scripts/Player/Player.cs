@@ -69,6 +69,7 @@ public class Player : MonoBehaviour {
         {
             isJumping = false;
             grounded = true;
+            gameObject.GetComponent<Animator>().SetBool("Jump", false);
         }
         if (collider.gameObject.tag == "Valuable")
         {

@@ -26,11 +26,13 @@ public class Jump : MonoBehaviour
 		{
 			player.isJumping = true;
             player.grounded = false;
+            gameObject.GetComponent<Animator>().SetBool("Jump", true);
             player.GetBody().velocity = Vector3.zero;
             player.GetBody().AddForce(Vector3.Scale(jumpForce, jumpDirection));
 			player.StartGame();
 			player.score += 1;
-            Game.SendAnimatedText("Hello", Color.white, player.GetPosition());
+            //Game.SendAnimatedText("Hello", Color.white, player.GetPosition());
+
 		}
 	}
 
